@@ -1,10 +1,18 @@
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 
-//middleware to protect routes
+// Middleware to protect routes
 export const protectRoute = async (req, res, next) => {
   try {
-    const token = req.headers.token;
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res
+        .status(401)
+        .json({ success: false, message: "JWT must be provided" });
+    }
+
+    const token = authHeader.split(" ")[1];
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -16,6 +24,6 @@ export const protectRoute = async (req, res, next) => {
     next();
   } catch (error) {
     console.log(error.message);
-    res.json({ success: false, message: error.message });
+    res.status(401).json({ success: false, message: error.message });
   }
 };
