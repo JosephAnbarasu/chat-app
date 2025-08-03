@@ -92,8 +92,8 @@ export const updateProfile = async (req, res) => {
         { profilePic: upload.secure_url, bio, fullName },
         { new: true }
       );
-      res.json({ success: true, user: updatedUser });
     }
+    res.json({ success: true, user: updatedUser });
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: error.message });
