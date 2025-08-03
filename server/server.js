@@ -38,7 +38,24 @@ io.on("connection", (socket) => {
 
 //middleware setup
 app.use(express.json({ limit: "4mb" }));
-app.use(cors());
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://chat-b3o8vfodn-joseph-anbarasu-ns-projects.vercel.app", // replace with your actual Vercel frontend URL
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 
 //routes setup
 app.use("/api/status", (req, res) => res.send("Server is live"));
