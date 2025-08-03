@@ -51,6 +51,10 @@ app.use(
   })
 );
 
+app.get("/", (req, res) => {
+  res.send("Backend is running.");
+});
+
 //routes setup
 app.use("/api/status", (req, res) => res.send("Server is live"));
 app.use("/api/auth", userRouter);
